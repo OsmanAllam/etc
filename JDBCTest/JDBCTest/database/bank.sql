@@ -69,7 +69,8 @@ CREATE PROCEDURE deposit(
 BEGIN
 	UPDATE accounts
     SET amount = amount + _amount
-    WHERE anumber = toAccount;
+    WHERE anumber = toAccount
+    AND   _amount > 0;
 END %%
 
 CREATE PROCEDURE withdraw(
@@ -78,8 +79,10 @@ CREATE PROCEDURE withdraw(
 )
 BEGIN
 	UPDATE accounts
-    SET amount = amount + _amount
-    WHERE anumber = fromAccount;
+    SET amount = amount - _amount
+    WHERE anumber = fromAccount
+    AND   _amount > 0
+    AND   getBalance(fromAccount) >= _amount;
 END %%
 
 DELIMITER ;
